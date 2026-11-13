@@ -4,7 +4,7 @@ A dependency-free Python filter with integrations for Claude Code, OpenCode, and
 
 ## Install with an AI assistant
 
-Copy the [AI installer prompt](INSTALL-PROMPT.md), specify Claude Code, OpenCode, or Pi, and give it to your assistant. The prompt directs the assistant to install the selected integration and merge the user config using absolute paths.
+Paste the [AI installer prompt](INSTALL-PROMPT.md) into Claude Code, OpenCode, or Pi. It detects the active harness and updates its user config.
 
 ## Claude Code
 
