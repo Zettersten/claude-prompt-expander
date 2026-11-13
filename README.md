@@ -2,6 +2,10 @@
 
 A dependency-free Python filter with integrations for Claude Code, OpenCode, and Pi. The hook blocks a submitted prompt when it finds a configured abbreviation and shows the expanded text to resubmit.
 
+## Install with an AI assistant
+
+Copy the [AI installer prompt](INSTALL-PROMPT.md), specify Claude Code, OpenCode, or Pi, and give it to your assistant. The prompt directs the assistant to install the selected integration and merge the user config using absolute paths.
+
 ## Claude Code
 
 1. Install Python 3 and confirm `python3 --version` works in the terminal where you run Claude Code. The Claude hook can use `py -3` on Windows if that is your Python launcher. The provider adapters currently expect `python3` on PATH.
