@@ -4,7 +4,7 @@ A dependency-free Python filter with integrations for Claude Code, OpenCode, and
 
 ## Install with an AI assistant
 
-Paste the [AI installer prompt](INSTALL-PROMPT.md) into Claude Code, OpenCode, or Pi. It detects the active harness and updates its user config.
+Paste the [AI installer prompt](INSTALL-PROMPT.md) into Claude Code, OpenCode, or Pi. It detects the active harness and updates its user config. To remove it, paste the [AI uninstaller prompt](UNINSTALL-PROMPT.md) the same way.
 
 ## Claude Code
 
@@ -88,6 +88,6 @@ python3 -m unittest
 
 The Claude Code hooks check submitted prompts, `@`-mentioned text files, and tool output. Claude Code controls hook execution and can continue after certain hook execution errors. Images and PDFs are not checked by any integration, because their text can't be read without OCR or PDF extraction. Instructions such as `CLAUDE.md`, file paths, and tool call arguments can also contribute text outside these hooks. This is a prompt guard, not a guarantee about the complete gateway payload.
 
-To uninstall, remove the hook entry from your user settings.
+To uninstall, paste the [AI uninstaller prompt](UNINSTALL-PROMPT.md) into the harness, or remove the hook entries, plugin, or extension path from your user config by hand. For OpenCode, also restore the provider's earlier `settings.encoding` value.
 
 [Claude Code hooks reference](https://code.claude.com/docs/en/hooks#userpromptsubmit)
