@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read raw UTF-8 text from stdin and expand literal substrings."""
+"""Read raw UTF-8 text from stdin and expand standalone abbreviations."""
 
 import re
 import sys
@@ -14,7 +14,24 @@ ABBREVIATIONS = {
     "eicd": "External Interface Control Document",
 }
 
-PATTERN = re.compile("|".join(ABBREVIATIONS), re.IGNORECASE | re.ASCII)
+
+def _any_case(key: str) -> str:
+    # Explicit ASCII classes instead of re.IGNORECASE, which would also match
+    # Unicode look-alikes such as "ſ" for "s" and break the lookup below.
+    return "".join(f"[{c}{c.upper()}]" if c.isalpha() else re.escape(c) for c in key)
+
+
+# Match an abbreviation only as a whole token: no letter or digit, in any
+# script, may touch either side. "dow" matches "DoW", "DoW's", "DoW-wide",
+# and "dow_report", but not "download", "window", or "shadow". Underscores
+# and punctuation count as separators. Longer keys go first so a key that
+# prefixes another can never shadow it.
+WORD_CHAR = r"[^\W_]"
+PATTERN = re.compile(
+    rf"(?<!{WORD_CHAR})(?:"
+    + "|".join(map(_any_case, sorted(ABBREVIATIONS, key=len, reverse=True)))
+    + rf")(?!{WORD_CHAR})"
+)
 
 
 def expand_text(value: str) -> str:

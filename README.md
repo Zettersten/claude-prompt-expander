@@ -54,12 +54,18 @@ coverage depend on the installed version and provider.
 
 ## Customize the terms
 
-Edit `ABBREVIATIONS` in `expand_abbreviations.py`. Keep keys lowercase and use plain ASCII letters and digits. Matching is case-insensitive and works inside words, so `dow` also matches inside `download`. Use expansions that contain none of your configured abbreviations so the expanded prompt can pass on resubmission.
+Edit `ABBREVIATIONS` in `expand_abbreviations.py`. Keep keys lowercase and use plain ASCII letters and digits. Matching is case-insensitive and only matches whole tokens: a letter or digit on either side blocks the match. `DoW`, `DoW's`, `DoW-wide`, and `dow_report` match; `download`, `window`, and `shadow` do not. Plurals such as `EICDs` are not matched, so add them as their own keys if you need them. Use expansions that contain none of your configured abbreviations so the expanded prompt can pass on resubmission.
 
 Run the raw text filter independently:
 
 ```sh
 printf '%s\n' 'Review the eIcD.' | python3 expand_abbreviations.py
+```
+
+Run the tests after changing the terms:
+
+```sh
+python3 -m unittest
 ```
 
 ## Scope
