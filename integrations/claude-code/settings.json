@@ -9,6 +9,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/absolute/path/to/claude-prompt-expander/integrations/claude-code/check_tool_output.py\""
+          }
+        ]
+      }
     ]
   }
 }

@@ -10,7 +10,7 @@ Paste the [AI installer prompt](INSTALL-PROMPT.md) into Claude Code, OpenCode, o
 
 1. Install Python 3 and confirm `python3 --version` works in the terminal where you run Claude Code. The Claude hook can use `py -3` on Windows if that is your Python launcher. The provider adapters currently expect `python3` on PATH.
 2. Clone this repository or use **Code → Download ZIP** and extract it to a stable location.
-3. Merge [the settings example](integrations/claude-code/settings.json) into `~/.claude/settings.json` (Windows: `%USERPROFILE%\.claude\settings.json`). Replace the example path with the absolute path to `check_prompt.py`. Keep the downloaded directory structure intact. If you already have a `UserPromptSubmit` array, append the entry. On Windows, use forward slashes in the path or escape backslashes for JSON.
+3. Merge [the settings example](integrations/claude-code/settings.json) into `~/.claude/settings.json` (Windows: `%USERPROFILE%\.claude\settings.json`). Replace the example paths with the absolute paths to `check_prompt.py` and `check_tool_output.py`. Keep the downloaded directory structure intact. If you already have a `UserPromptSubmit` or `PostToolUse` array, append the entry. On Windows, use forward slashes in the path or escape backslashes for JSON.
 
 ```json
 {
@@ -24,12 +24,28 @@ Paste the [AI installer prompt](INSTALL-PROMPT.md) into Claude Code, OpenCode, o
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/absolute/path/to/claude-prompt-expander/integrations/claude-code/check_tool_output.py\""
+          }
+        ]
+      }
     ]
   }
 }
 ```
 
 4. Restart Claude Code. Submit `Review the eIcD.` The hook should block it and show `Review the External Interface Control Document.` Submit the expanded prompt to proceed.
+
+The two hooks cover different paths:
+
+- `check_prompt.py` checks the typed prompt and any `@`-mentioned text files. Claude Code attaches mentioned files after the hook runs, so a file can't be rewritten; the hook blocks and names the file to fix.
+- `check_tool_output.py` expands terms in what tools return (file reads, shell output, search results, web fetches, MCP tools) before Claude sees it. File paths, base64 data, and IDs are left alone. If this hook fails, Claude Code continues with the original output.
 
 ## OpenCode
 
@@ -70,7 +86,7 @@ python3 -m unittest
 
 ## Scope
 
-The hook checks submitted user prompts. Claude Code controls hook execution and can continue after certain hook execution errors. Files, tool results, instructions, and conversation history can also contribute text outside this hook. This is a prompt guard, not a guarantee about the complete gateway payload.
+The Claude Code hooks check submitted prompts, `@`-mentioned text files, and tool output. Claude Code controls hook execution and can continue after certain hook execution errors. Images and PDFs are not checked by any integration, because their text can't be read without OCR or PDF extraction. Instructions such as `CLAUDE.md`, file paths, and tool call arguments can also contribute text outside these hooks. This is a prompt guard, not a guarantee about the complete gateway payload.
 
 To uninstall, remove the hook entry from your user settings.
 

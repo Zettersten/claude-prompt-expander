@@ -9,7 +9,7 @@ Clone or download into a stable folder owned by the user. Keep the folder tree. 
 
 Use user config only. No sudo. No admin. Find the active config, including overrides. Back it up. Merge with absolute paths. Keep existing settings and JSONC comments. Add no duplicates.
 
-- Claude Code: Merge integrations/claude-code/settings.json into user settings.json. Set the command to the available Python 3 launcher and the quoted absolute path to integrations/claude-code/check_prompt.py.
+- Claude Code: Merge integrations/claude-code/settings.json into user settings.json. Set each command to the available Python 3 launcher and the quoted absolute path to its script: integrations/claude-code/check_prompt.py for UserPromptSubmit and integrations/claude-code/check_tool_output.py for PostToolUse.
 - OpenCode: Add the absolute integrations/opencode directory to user config plugins. Set settings.encoding to "none" for the active provider. Keep its URL and auth.
 - Pi: Add the absolute integrations/pi/index.ts path to user settings.json extensions.
 
